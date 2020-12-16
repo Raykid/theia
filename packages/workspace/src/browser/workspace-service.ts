@@ -384,13 +384,15 @@ export class WorkspaceService implements FrontendApplicationContribution {
         const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss.SSS';
         const _now: moment.Moment = moment(new Date(), DATE_TIME_FORMAT);
         console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!! spliceRoots ', _now);
+        console.error('!!! spliceRoots !!! ', start, ' /// ', deleteCount, ' /// ', rootsToAdd);
         if (!this._workspace) {
             console.error('!!! spliceRoots !!! RETURN ');
             throw new Error('There is not active workspace');
         }
         const dedup = new Set<string>();
-        console.error('!!! spliceRoots !!! dedup ', dedup);
+
         const roots = this._roots.map(root => (dedup.add(root.resource.toString()), root.resource.toString()));
+
         console.error('!!! spliceRoots !!! roots ', roots);
         const toAdd: string[] = [];
         for (const root of rootsToAdd) {
@@ -404,6 +406,7 @@ export class WorkspaceService implements FrontendApplicationContribution {
             }
         }
         const toRemove = roots.splice(start, deleteCount || 0, ...toAdd);
+        console.error('!!! spliceRoots !!! toRemove ', toRemove);
         if (!toRemove.length && !toAdd.length) {
             return [];
         }
